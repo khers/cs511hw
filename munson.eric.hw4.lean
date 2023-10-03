@@ -10,6 +10,8 @@ import Library.Tactic.Addarith
 import Library.Tactic.Cancel
 import Library.Tactic.Use
 
+notation3 (prettyPrint := false) "forall_sufficiently_large "(...)", "r:(scoped P => ∃ C, ∀ x ≥ C, P x) => r
+
 -- 4a
 example {n : ℤ} (hn : Odd n) : Odd (7 * n - 4) := by
   dsimp [Odd] at *
