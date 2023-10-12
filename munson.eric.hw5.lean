@@ -180,3 +180,28 @@ example {x y : ℝ} (n : ℕ) (hx : 0 ≤ x) (hn : 0 < n) (h : y ^ n ≤ x ^ n) 
   cancel n at h
 
 -- 6d
+example (p : ℕ) (h : Prime p) : p = 2 ∨ Odd p := by
+  dsimp [Prime] at *
+  obtain ⟨leq2, mdivp1⟩ := h
+  obtain le2 | ge3 := le_or_succ_le p 2
+  · left
+    apply le_antisymm le2 leq2
+  · right
+    have evenOrOddp := even_or_odd p
+    dsimp [Even] at evenOrOddp
+    cases evenOrOddp with
+    | inr pOdd =>
+      apply pOdd
+    | inl pEven =>
+      have h2_div_p : 2 ∣ p := by apply pEven
+      have notmdivp1 := mdivp1 2
+      have contra : 2 = p := by
+        simp at notmdivp1
+        apply notmdivp1
+        apply h2_div_p
+      have plt3 : p < 3 := by
+        calc
+          p = 2 := by rw [contra]
+          _ < 3 := by numbers
+      have contra2 : ¬p < 3 := by apply not_lt_of_ge ge3
+      contradiction
