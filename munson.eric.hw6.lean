@@ -8,7 +8,7 @@ import Library.Tactic.Extra
 import Library.Tactic.Numbers
 import Library.Tactic.Addarith
 import Library.Tactic.Cancel
-import Library.Tactic.Us
+import Library.Tactic.Use
 
 def Tribalanced (x : ℝ) : Prop := ∀ n : ℕ, (1 + x / n) ^ n < 3
 
