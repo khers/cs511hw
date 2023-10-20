@@ -10,6 +10,34 @@ import Library.Tactic.Addarith
 import Library.Tactic.Cancel
 import Library.Tactic.Us
 
+def Tribalanced (x : ℝ) : Prop := ∀ n : ℕ, (1 + x / n) ^ n < 3
+
+def Superpowered (k : ℕ) : Prop := ∀ n : ℕ, Prime (k ^ k ^ n + 1)
+
+theorem not_superpowered_zero : ¬ Superpowered 0 := by
+  intro h
+  have one_prime : Prime (0 ^ 0 ^ 0 + 1) := h 0
+  conv at one_prime => numbers -- simplifies that statement to `Prime 1`
+  have : ¬ Prime 1 := not_prime_one
+  contradiction
+
+theorem superpowered_one : Superpowered 1 := by
+  intro n
+  conv => ring_nf -- simplifies goal from `Prime (1 ^ 1 ^ n + 1)` to `Prime 2`
+  apply prime_two
+
+theorem not_superpowered_three : ¬ Superpowered 3 := by
+  intro h
+  dsimp [Superpowered] at h
+  have four_prime : Prime (3 ^ 3 ^ 0 + 1) := h 0
+  conv at four_prime => numbers -- simplifies that statement to `Prime 4`
+  have four_not_prime : ¬ Prime 4
+  · apply not_prime 2 2
+    · numbers -- show `2 ≠ 1`
+    · numbers -- show `2 ≠ 4`
+    · numbers -- show `4 = 2 * 2`
+  contradiction
+
 -- 4a
 example {P Q : α → Prop} (h : ∀ x, P x ↔ Q x) : (∃ x, P x) ↔ (∃ x, Q x) := by
   constructor
